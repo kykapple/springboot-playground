@@ -1,0 +1,22 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== Post API
+=== 게시물 생성
+==== Request
+include::{snippets}/createPost/http-request.adoc[]
+==== Form data
+include::{snippets}/createPost/request-parameters.adoc[]
+=== Response
+include::{snippets}/createPost/http-response.adoc[]
+==== Response header
+include::{snippets}/createPost/response-headers.adoc[]
+
+=== 게시물 조회
+==== Request
+include::{snippets}/getPost/http-request.adoc[]
+==== Path variable
+include::{snippets}/getPost/path-parameters.adoc[]
+==== Response
+include::{snippets}/getPost/http-response.adoc[]

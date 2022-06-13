@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-@Service
+//@Service
 public class PostService {
 
     private PostRepository postRepository;

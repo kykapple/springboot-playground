@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Getter
-@Entity
+//@Entity
 public class Post {
 
     @Id

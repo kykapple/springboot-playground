@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="info-log-path">./logs/info</Property>
+        <Property name="warn-log-path">./logs/warn</Property>
+        <Property name="error-log-path">./logs/error</Property>
+        <Property name="log-pattern">%d{yyyy-MM-dd HH:mm::ss.SSS} %t %-5level %C{10}.%M line: %L %n  > %m %n</Property>
+        <Property name="file-name-pattern">%d{yyyy-MM-dd}-%i</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="InfoLogFileAppender" fileName="${info-log-path}/info.log" filePattern="${info-log-path}/info.log-${file-name-pattern}" immediateFlush="false">
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" />
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+            <PatternLayout pattern="${log-pattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="2" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${info-log-path}" maxDepth="1">
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Appenders>
+        <RollingFile name="WarnLogFileAppender" fileName="${warn-log-path}/warn.log" filePattern="${warn-log-path}/warn.log-${file-name-pattern}" immediateFlush="false">
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" />
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+            <PatternLayout pattern="${log-pattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="2" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${warn-log-path}" maxDepth="1">
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Appenders>
+        <RollingFile name="ErrorLogFileAppender" fileName="${error-log-path}/error.log" filePattern="${error-log-path}/error.log-${file-name-pattern}" immediateFlush="false">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" />
+            </Filters>
+            <PatternLayout pattern="${log-pattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="2" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${error-log-path}" maxDepth="1">
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <AsyncLogger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="InfoLogFileAppender" />
+            <AppenderRef ref="WarnLogFileAppender" />
+            <AppenderRef ref="ErrorLogFileAppender" />
+        </AsyncLogger>
+        <AsyncLogger name="com.kykapple.springbootplayground" level="info" additivity="false">
+            <AppenderRef ref="InfoLogFileAppender" />
+            <AppenderRef ref="WarnLogFileAppender" />
+            <AppenderRef ref="ErrorLogFileAppender" />
+        </AsyncLogger>
+    </Loggers>
+
+</Configuration>

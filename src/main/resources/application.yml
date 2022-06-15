@@ -13,6 +13,3 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
-
-logging:
-  config: classpath:log4j2/log4j2-dev.xml

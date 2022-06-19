@@ -12,3 +12,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mongodb:
+    embedded:
+      version: 3.4.0
+  data:
+    mongodb:
+      port: 0

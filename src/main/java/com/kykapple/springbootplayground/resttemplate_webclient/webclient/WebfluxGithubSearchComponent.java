@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 @Component
-public class GithubSearchComponent {
+public class WebfluxGithubSearchComponent {
 
     private static final int REQUEST_COUNT = 4;
     private static final String BASE_URL = "https://api.github.com";
@@ -24,7 +24,7 @@ public class GithubSearchComponent {
     private WebClient webClient;
     private String accessToken;
 
-    public GithubSearchComponent(
+    public WebfluxGithubSearchComponent(
             WebClient webClient,
             @Value("${github.accessToken}") String accessToken
     ) {
@@ -38,9 +38,9 @@ public class GithubSearchComponent {
             CountDownLatch countDownLatch = new CountDownLatch(REQUEST_COUNT);
 
             requestGithubRepositoryCount(userName, map, countDownLatch);
-            requestCount(BASE_URL + "/search/issues?q=author:" + userName + "+type:issue", "ISSUE", map, countDownLatch);
-            requestCount(BASE_URL + "/search/issues?q=author:" + userName + "+type:pr", "PR", map, countDownLatch);
-            requestCount(BASE_URL + "/search/commits?q=author:" + userName, "COMMIT", map, countDownLatch);
+            requestGithubActivityCount(BASE_URL + "/search/issues?q=author:" + userName + "+type:issue", "ISSUE", map, countDownLatch);
+            requestGithubActivityCount(BASE_URL + "/search/issues?q=author:" + userName + "+type:pr", "PR", map, countDownLatch);
+            requestGithubActivityCount(BASE_URL + "/search/commits?q=author:" + userName, "COMMIT", map, countDownLatch);
 
             countDownLatch.await();
         } catch (InterruptedException e) {
@@ -49,7 +49,7 @@ public class GithubSearchComponent {
         }
     }
 
-    public void requestCount(String url, String type, Map<String, Integer> map, CountDownLatch countDownLatch) {
+    public void requestGithubActivityCount(String url, String type, Map<String, Integer> map, CountDownLatch countDownLatch) {
         requestGithubAPI(url)
                 .bodyToMono(CountDto.class)
                 .subscribe(countDto -> {

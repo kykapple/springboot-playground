@@ -1,6 +1,7 @@
 package com.kykapple.springbootplayground.resttemplate_webclient;
 
-import com.kykapple.springbootplayground.resttemplate_webclient.webclient.GithubSearchComponent;
+import com.kykapple.springbootplayground.resttemplate_webclient.resttemplate.RestTemplateGithubSearchComponent;
+import com.kykapple.springbootplayground.resttemplate_webclient.webclient.WebfluxGithubSearchComponent;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,16 +12,29 @@ import java.util.*;
 @RestController
 public class GithubSearchController {
 
-    private GithubSearchComponent githubSearchComponent;
+    private WebfluxGithubSearchComponent webfluxGithubSearchComponent;
+    private RestTemplateGithubSearchComponent restTemplateGithubSearchComponent;
 
-    public GithubSearchController(GithubSearchComponent githubSearchComponent) {
-        this.githubSearchComponent = githubSearchComponent;
+    public GithubSearchController(
+            WebfluxGithubSearchComponent webfluxGithubSearchComponent,
+            RestTemplateGithubSearchComponent restTemplateGithubSearchComponent
+    ) {
+        this.webfluxGithubSearchComponent = webfluxGithubSearchComponent;
+        this.restTemplateGithubSearchComponent = restTemplateGithubSearchComponent;
     }
 
-    @GetMapping("/api/users/{userName}/profile")
-    public ResponseEntity<Map<String, Integer>> searchGithubProfile(@PathVariable String userName) {
+    @GetMapping("/api/users/{userName}/profile/webflux")
+    public ResponseEntity<Map<String, Integer>> searchGithubProfileWithWebflux(@PathVariable String userName) {
         Map<String, Integer> profileMap = new HashMap<>();
-        githubSearchComponent.requestGithubProfile(userName, profileMap);
+        webfluxGithubSearchComponent.requestGithubProfile(userName, profileMap);
+
+        return ResponseEntity.ok(profileMap);
+    }
+
+    @GetMapping("/api/users/{userName}/profile/restTemplate")
+    public ResponseEntity<Map<String, Integer>> searchGithubProfileWithRestTemplate(@PathVariable String userName) {
+        Map<String, Integer> profileMap = new HashMap<>();
+        restTemplateGithubSearchComponent.requestGithubProfile(userName, profileMap);
 
         return ResponseEntity.ok(profileMap);
     }

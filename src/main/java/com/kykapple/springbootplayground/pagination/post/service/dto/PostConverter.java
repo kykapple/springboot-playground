@@ -23,7 +23,7 @@ public class PostConverter {
                 .map(CommentConverter::toCommentResponseDto)
                 .collect(Collectors.toList());
 
-        List<String> tags = post.getTags()
+        List<String> tags = post.getPostTags().getTags()
                 .stream()
                 .map(PostTag::getTag)
                 .map(Tag::getName)

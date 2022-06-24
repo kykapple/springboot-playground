@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional
@@ -39,6 +40,25 @@ public class PostService {
 
     public List<PostResponse> readPost(Pageable pageable) {
         List<Post> posts = postRepository.findAllPosts(pageable);
+
+        return PostConverter.toPostResponseDtoList(posts);
+    }
+
+    public void deletePost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(RuntimeException::new);
+        postRepository.deleteById(post.getId());
+    }
+
+    public Long findPostByWriter(String writer) {
+        Post post = postRepository.findPostByWriterName(writer)
+                .orElseThrow(RuntimeException::new);
+
+        return post.getId();
+    }
+
+    public List<PostResponse> findPostsBetweenDate(LocalDateTime start, LocalDateTime end) {
+        List<Post> posts = postRepository.findPostsBetweenDate(start, end);
 
         return PostConverter.toPostResponseDtoList(posts);
     }

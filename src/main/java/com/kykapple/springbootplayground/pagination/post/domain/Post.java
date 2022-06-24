@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -33,13 +32,8 @@ public class Post {
     )
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "post",
-            cascade = CascadeType.PERSIST,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
-    private List<PostTag> tags = new ArrayList<>();
+    @Embedded
+    private PostTags postTags;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -51,13 +45,11 @@ public class Post {
     public Post(String writer, String contents) {
         this.writer = writer;
         this.contents = contents;
+        postTags = new PostTags();
     }
 
     public void addTags(List<Tag> tags) {
-        this.tags.addAll(tags.stream()
-                .map(tag -> new PostTag(this, tag))
-                .collect(Collectors.toList())
-        );
+        postTags.addTags(this, tags);
     }
 
 }

@@ -19,6 +19,10 @@ public class TagService {
     }
 
     public List<Tag> addTags(List<String> tags) {
+        if (tags == null) {
+            return List.of();
+        }
+
         return tags.stream()
                 .map(tagName ->
                         tagRepository.findByName(tagName)

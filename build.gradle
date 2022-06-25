@@ -58,6 +58,8 @@ dependencies {
 
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
 }
 
 querydsl {

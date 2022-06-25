@@ -2,6 +2,8 @@ package com.kykapple.springbootplayground.pagination.post.presentation;
 
 import com.kykapple.springbootplayground.pagination.post.presentation.dto.CreatePostRequest;
 import com.kykapple.springbootplayground.pagination.post.presentation.dto.PostConverter;
+import com.kykapple.springbootplayground.pagination.post.presentation.dto.SearchPostsByDateRequest;
+import com.kykapple.springbootplayground.pagination.post.presentation.dto.UpdatePostRequest;
 import com.kykapple.springbootplayground.pagination.post.service.PostService;
 import com.kykapple.springbootplayground.pagination.post.service.dto.CreatePostRequestDto;
 import com.kykapple.springbootplayground.pagination.post.service.dto.PostResponse;
@@ -55,13 +57,18 @@ public class PostController {
     }
 
     @GetMapping("/api/posts/date")
-    public ResponseEntity<List<PostResponse>> findPostBetweenDate(
-            @RequestParam(name = "start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam(name = "end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
-    ) {
-        List<PostResponse> postResponseList = postService.findPostsBetweenDate(start, end);
+    public ResponseEntity<List<PostResponse>> findPostBetweenDate(SearchPostsByDateRequest searchPostsByDateRequest) {
+        List<PostResponse> postResponseList = postService.findPostsBetweenDate(searchPostsByDateRequest.getStart(), searchPostsByDateRequest.getEnd());
 
         return ResponseEntity.ok(postResponseList);
+    }
+
+    @PutMapping("/api/posts")
+    public ResponseEntity<Void> updatePost(@RequestBody UpdatePostRequest updatePostRequest) {
+        postService.updatePost(updatePostRequest.getWriter(), updatePostRequest.getContents());
+
+        return ResponseEntity.ok()
+                .build();
     }
 
 }

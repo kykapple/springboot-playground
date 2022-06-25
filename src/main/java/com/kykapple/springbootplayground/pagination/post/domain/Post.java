@@ -38,6 +38,9 @@ public class Post {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Version
+    private Long version;
+
     public Post() {
     }
 
@@ -46,6 +49,10 @@ public class Post {
         this.writer = writer;
         this.contents = contents;
         postTags = new PostTags();
+    }
+
+    public void updateContents(String contents) {
+        this.contents = contents;
     }
 
     public void addTags(List<Tag> tags) {

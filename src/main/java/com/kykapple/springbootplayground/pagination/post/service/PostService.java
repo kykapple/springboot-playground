@@ -63,4 +63,21 @@ public class PostService {
         return PostConverter.toPostResponseDtoList(posts);
     }
 
+    public void updatePost(String writer, String contents) {
+        try {
+            Post post = postRepository.findPostByWriter(writer)
+                    .orElseThrow(RuntimeException::new);
+
+            Thread.sleep(3000);
+
+            post.updateContents(contents);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePost(String writer) {
+        postRepository.deletePostByWriter(writer);
+    }
+
 }

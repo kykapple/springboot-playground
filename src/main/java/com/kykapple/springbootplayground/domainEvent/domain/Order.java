@@ -18,10 +18,10 @@ public class Order {
 
     public void cancel() {
         this.state = OrderState.CANCELED;
+        EventPublisher.publish(new OrderCanceledEvent(this.orderNo));
         System.out.println("////////이벤트 발행////////");
         System.out.println(Thread.currentThread().getName());
         System.out.println("/////////////////////////");
-        EventPublisher.publish(new OrderCanceledEvent(this.orderNo));
     }
 
 }

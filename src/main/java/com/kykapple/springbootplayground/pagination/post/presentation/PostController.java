@@ -1,5 +1,6 @@
 package com.kykapple.springbootplayground.pagination.post.presentation;
 
+import com.kykapple.springbootplayground.pagination.post.domain.Post;
 import com.kykapple.springbootplayground.pagination.post.presentation.dto.CreatePostRequest;
 import com.kykapple.springbootplayground.pagination.post.presentation.dto.PostConverter;
 import com.kykapple.springbootplayground.pagination.post.presentation.dto.SearchPostsByDateRequest;
@@ -13,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class PostController {
     }
 
     @PostMapping("/api/posts")
-    public ResponseEntity<Void> writePost(@RequestBody CreatePostRequest createPostRequest) {
+    public ResponseEntity<Void> writePost(@Valid CreatePostRequest createPostRequest) {
         CreatePostRequestDto createPostRequestDto = PostConverter.toCreatePostRequestDto(createPostRequest);
         postService.writePost(createPostRequestDto);
 

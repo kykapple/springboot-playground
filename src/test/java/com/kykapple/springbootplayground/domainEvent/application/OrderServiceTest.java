@@ -15,7 +15,7 @@ class OrderServiceTest {
 
     @Test
     void eventTest() {
-        Order order = new Order("book:001");
+        Order order = new Order("book:001", "kyk");
         orderService.cancelOrder(order);
 
         System.out.println(order.getState());

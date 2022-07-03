@@ -7,6 +7,10 @@ import com.kykapple.springbootplayground.mongodb.service.dto.UserRequestDto;
 import com.kykapple.springbootplayground.mongodb.service.dto.UserResponse;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -28,6 +32,20 @@ public class UserService {
                 .orElseThrow(RuntimeException::new);
 
         return new UserResponse(user);
+    }
+
+    public List<UserResponse> findUserByRegisteredAtLeastOneHour(LocalDateTime current) {
+        return userRepository.findUserByRegisteredAtLeastOneHour(current.minusHours(1))
+                .stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserResponse> findUsersByRegisteredBetween(LocalDateTime from, LocalDateTime to) {
+        return userRepository.findUsersByRegisteredAtBetween(from, to)
+                .stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
     }
 
     public UserResponse updateUserAge(UpdateUserRequestDto updateUserRequestDto) {

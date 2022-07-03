@@ -6,8 +6,12 @@ import com.kykapple.springbootplayground.mongodb.service.UserService;
 import com.kykapple.springbootplayground.mongodb.service.dto.UpdateUserRequestDto;
 import com.kykapple.springbootplayground.mongodb.service.dto.UserRequestDto;
 import com.kykapple.springbootplayground.mongodb.service.dto.UserResponse;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -54,6 +58,13 @@ public class UserController {
         UserResponse userResponse = userService.removeUser(userId);
 
         return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping("/api/users/date")
+    public ResponseEntity<List<UserResponse>> findUserByRegisteredAt(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime current) {
+        List<UserResponse> users = userService.findUserByRegisteredAtLeastOneHour(current);
+
+        return ResponseEntity.ok(users);
     }
 
 
